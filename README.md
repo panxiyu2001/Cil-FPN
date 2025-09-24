@@ -8,7 +8,7 @@ It introduces the **Cross-layer Lightweight Feature Pyramid Network (Cil-FPN)** 
 
 Remote sensing object detection faces persistent challenges from small objects, dense distributions, and complex backgrounds. Conventional detectors tend to lose fine-grained spatial cues due to repeated down-sampling, limiting small-object perception.  
 To address this, we introduce the **Cross-layer Lightweight Feature Pyramid Network (Cil-FPN)**, which enhances detection by combining shallow high-resolution features with deep semantic cues. Within Cil-FPN, the **Multibranch Competitive Frequency-guided Module (MCFM)** further improves discriminative representation.
-
+![Cil-FPN Architecture](images5.pdf)
 ## Contributions
 
 - Propose **Cil-FPN**, a lightweight cross-layer feature pyramid network tailored for remote sensing detection.  
