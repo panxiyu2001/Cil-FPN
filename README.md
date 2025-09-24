@@ -22,7 +22,6 @@ To address this, we introduce the **Cross-layer Lightweight Feature Pyramid Netw
 
 ## Requirements
 
-- **LaTeX distribution**: 
 
 ## Compilation
 
