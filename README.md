@@ -20,21 +20,8 @@ To address this, we introduce the **Cross-layer Lightweight Feature Pyramid Netw
 
 ## Requirements
 
-- **LaTeX distribution**: TeX Live or MikTeX (latest version recommended)  
-- Commonly required packages:
-  - `graphicx`
-  - `amsmath`, `amssymb`
-  - `algorithm`, `algorithmic`
-  - `hyperref`
-  - `natbib` or `biblatex`
+- **LaTeX distribution**: 
 
 ## Compilation
 
-Run the following commands to generate the PDF:
-
-```bash
-pdflatex 0000.tex
-bibtex 0000
-pdflatex 0000.tex
-pdflatex 0000.tex
 
