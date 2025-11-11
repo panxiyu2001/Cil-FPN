@@ -2,7 +2,6 @@
 
 # 
 
-This repository contains the LaTeX source code for the paper  
 **""**.  
 It introduces the **Cross-layer Lightweight Feature Pyramid Network (Cil-FPN)** for remote sensing object detection.
 
