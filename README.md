@@ -1,4 +1,4 @@
-The cfg file is the model framework file.
+The cfg file contains the framework files for three different models.
 
 # 
 
