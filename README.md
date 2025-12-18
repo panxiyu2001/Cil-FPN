@@ -1,4 +1,5 @@
-## The cfg file contains the framework files for three different models.
+- The configuration file (`cfg`) contains the framework definitions for three different models.  
+- The MCFM code has been integrated into `MCFM.py`.
 
 # 
 
