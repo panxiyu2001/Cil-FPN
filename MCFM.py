@@ -1,24 +1,17 @@
 class MCFM(nn.Module):
-    """
-    - 共享上下文: [avg, max, edge] -> 1x1 生成分支logits
-    - 分支上下文: 每分支自己的 GAP 描述经 1x1 调制到对应logits上
-    - 温度Softmax: 可学习 tau 控制“竞争温度”
-    - 空间门: DWConv3x3 + PWConv1x1 -> Sigmoid
-    - 可学习残差: out = fused*spatial + beta*sum
-    - 全流程仅用 Conv/Pool/Norm，calflops 友好
-    """
+
     def __init__(self, inc, dim, reduction=16, init_tau=0.7, init_beta=0.1):
         super().__init__()
         self.height = len(inc)
         self.dim = dim
 
-        # 1) 对齐通道（仅在需要时投影）
+        # 1) 对齐通道
         self.proj = nn.ModuleList([
             nn.Conv2d(i, dim, 1, bias=False) if i != dim else nn.Identity()
             for i in inc
         ])
 
-        # 2) 分支前统一归一化（稳定统计）
+        # 2) 分支前统一归一化
         # 对 [B*height, C, H, W] 统一做 GroupNorm(=LayerNorm2d)
         self.pre_norm = nn.GroupNorm(1, dim)
 
@@ -26,7 +19,7 @@ class MCFM(nn.Module):
         # 通道数: avg(C) + max(C) + edge(C) = 3C
         self.shared_fc = nn.Conv2d(3 * dim, self.height * dim, 1, bias=False)
 
-        # 4) 分支上下文（每个分支自己的 GAP）-> 调制项
+        # 4) 分支上下文（每个分支自己的 GAP）
         self.branch_fc = nn.Conv2d(dim, dim, 1, bias=False)
 
         # 5) 温度 softmax（learnable tau，限制在[0.5, 2.5]附近）
@@ -37,10 +30,10 @@ class MCFM(nn.Module):
         self.spatial_dw = nn.Conv2d(dim, dim, 3, padding=1, groups=dim, bias=False)
         self.spatial_pw = nn.Conv2d(dim, 1, 1, bias=False)
 
-        # 7) 可学习残差权重 beta（小值起步，让注意力主导）
+        # 7) 可学习残差权重 beta
         self.beta = nn.Parameter(torch.tensor(float(init_beta)))
 
-        # 8) 固定拉普拉斯核，作为“边缘能量”提示（卷积友好、无FFT）
+        # 8) 固定拉普拉斯核，作为“边缘能量”提示
         self.edge_conv = nn.Conv2d(1, 1, 3, padding=1, bias=False)
         with torch.no_grad():
             k = torch.tensor([[0.,  1., 0.],
@@ -50,7 +43,7 @@ class MCFM(nn.Module):
         for p in self.edge_conv.parameters():
             p.requires_grad = False  # 固定不训练
 
-        # 将 1x1 的 edge 标量投影到 C 维（与通道对齐）
+        # 将 1x1 的 edge 标量投影到 C 维
         self.edge_fc = nn.Conv2d(1, dim, 1, bias=False)
 
     def _temperature(self):
@@ -72,7 +65,7 @@ class MCFM(nn.Module):
         feats_sum = torch.sum(x, dim=1)                          # [B,C,H,W]
         g_avg = F.adaptive_avg_pool2d(feats_sum, 1)              # [B,C,1,1]
         g_max = F.adaptive_max_pool2d(feats_sum, 1)              # [B,C,1,1]
-        # 边缘能量（近似频域的“高频强度”）
+        # 边缘能量
         gray = feats_sum.mean(1, keepdim=True)                   # [B,1,H,W]
         edge = torch.abs(self.edge_conv(gray))                   # [B,1,H,W]
         edge_g = F.adaptive_avg_pool2d(edge, 1)                  # [B,1,1,1]
@@ -82,18 +75,18 @@ class MCFM(nn.Module):
         logits_shared = self.shared_fc(shared_ctx)                # [B,height*C,1,1]
         logits_shared = logits_shared.view(B, self.height, C, 1, 1)
 
-        # ====== 分支上下文调制（每分支自己的GAP）======
+        # ====== 分支上下文调制======
         b_avg = x.mean(dim=(3, 4), keepdim=True)                 # [B,height,C,1,1]
         b_mod = self.branch_fc(b_avg.view(B * self.height, C, 1, 1))
         b_mod = b_mod.view(B, self.height, C, 1, 1)
 
         logits = logits_shared + b_mod                           # [B,height,C,1,1]
 
-        # 温度化 Softmax（在分支维度上做竞争）
+        # 温度化 Softmax
         tau = self._temperature()
         attn = self.softmax(logits / tau)                        # [B,height,C,1,1]
 
-        # ====== 空间注意力（轻量有效）======
+        # ====== 空间注意力======
         s = self.spatial_pw(self.spatial_dw(feats_sum))          # [B,1,H,W]
         spatial = torch.sigmoid(s)
 
