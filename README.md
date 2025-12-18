@@ -1,4 +1,4 @@
-⚠️ The complete code will be released after acceptance.
+The cfg file is the model framework file.
 
 # 
 
