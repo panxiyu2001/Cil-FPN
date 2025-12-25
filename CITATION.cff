@@ -5,8 +5,8 @@ message: >
 title: "Cil-FPN"
 
 authors:
-  - family-names: Xiyu
-    given-names: Pan
+  - family-names: Pan
+    given-names: Xiyu
     orcid: 0009-0002-7301-8853
 
 version: 1.0.0
