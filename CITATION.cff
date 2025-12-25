@@ -1,9 +1,14 @@
 cff-version: 1.2.0
-message: "If you use this software, please cite it as below."
+message: >
+  If you use this software, please cite it as below.
+
+title: "Cil-FPN"
+
 authors:
-- family-names: "Pan"
-  given-names: "Xiyu"
-  orcid: "https://orcid.org/0009-0002-7301-8853"
-version: "1.0.0"
-date-released: "2025-10-31"  # ✅ 已修正为实际年份（非2025）
-url: "https://github.com/panxiyu2001/Cil-FPN"
+  - family-names: Pan
+    given-names: Xiyu
+    orcid: 0009-0002-7301-8853
+
+version: 1.0.0
+date-released: 2025-10-31
+url: https://github.com/panxiyu2001/Cil-FPN
