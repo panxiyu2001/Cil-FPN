@@ -12,7 +12,7 @@ It introduces the **Cross-layer Lightweight Feature Pyramid Network (Cil-FPN)** 
 ## CIL-FPN
 ![Cil-FPN Architecture](cilfpn.png)
 ## MCFM
-![MCFM Architecturer](111.png)
+![MCFM Architecturer](mcfm.png)
 ## Contributions
 
 - Propose **Cil-FPN**, a lightweight cross-layer feature pyramid network tailored for remote sensing detection.  
