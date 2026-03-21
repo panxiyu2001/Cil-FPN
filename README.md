@@ -1,4 +1,4 @@
-##📍News:​ Our paper “Cil-FPN: A New Paradigm for Efficient Feature Fusion for UAV Object Detection”​ has been accepted by the International Joint Conference on Neural Networks (IJCNN) 2026.
+**📍News: Our paper "Cil-FPN: A New Paradigm for Efficient Feature Fusion for UAV Object Detection" has been accepted by the International Joint Conference on Neural Networks (IJCNN) 2026.**
 # 
 
 - The configuration file (`cfg`) contains the framework definitions for three different models.  
