@@ -2,12 +2,17 @@ cff-version: 1.2.0
 message: >
   If you use this software, please cite it as below.
 
-title: "Cil-FPN"
+title: "Cil-FPN: A New Paradigm for Efficient Feature Fusion for UAV Object Detection"
+repository-code: "https://github.com/panxiyu2001/Cil-FPN"
 
 authors:
   - family-names: Pan
     given-names: Xiyu
-    orcid: 0009-0002-7301-8853
+    orcid: "https://orcid.org/0009-0002-7301-8853"
+  - family-names: Xiong
+    given-names: Kai
+  - family-names: Li
+    given-names: Jianjun
 
 version: 1.0.0
 date-released: 2025-10-31
